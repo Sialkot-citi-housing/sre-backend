@@ -33,4 +33,17 @@ const authUser = async (req, res) => {
   }
 };
 
-module.exports = { authUser };
+const debugDb = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.json({
+      dbConnection: require('mongoose').connection.name,
+      usersFound: users.length,
+      users: users.map(u => ({ email: u.email, role: u.role }))
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { authUser, debugDb };
