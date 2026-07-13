@@ -46,4 +46,25 @@ const debugDb = async (req, res) => {
   }
 };
 
-module.exports = { authUser, debugDb };
+const seedDb = async (req, res) => {
+  try {
+    const adminExists = await User.findOne({ email: 'a.khan@sre.pk' });
+    if (adminExists) {
+      return res.json({ message: 'User already exists', user: adminExists.email });
+    }
+    
+    const adminUser = new User({
+      name: 'Admin Khan',
+      email: 'a.khan@sre.pk',
+      password: 'SreAdmin@2026!',
+      role: 'admin'
+    });
+    
+    await adminUser.save();
+    res.json({ message: 'Seeded successfully!', email: 'a.khan@sre.pk' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { authUser, debugDb, seedDb };
