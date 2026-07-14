@@ -6,7 +6,7 @@ const procurementSchema = mongoose.Schema({
   item: { type: String, required: true },
   category: { 
     type: String, 
-    enum: ['bricks', 'cement', 'steel', 'sandcrush', 'labour', 'other'], 
+    enum: ['bricks', 'cement', 'steel', 'sandcrush', 'other'], 
     required: true 
   },
   quantity: { type: Number, required: true },
