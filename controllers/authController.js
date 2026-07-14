@@ -67,4 +67,22 @@ const seedDb = async (req, res) => {
   }
 };
 
-module.exports = { authUser, debugDb, seedDb };
+const clearDb = async (req, res) => {
+  try {
+    const mongoose = require('mongoose');
+    const collections = mongoose.connection.collections;
+    
+    const cleared = [];
+    for (const key in collections) {
+      if (key !== 'users') { // Don't delete login credentials!
+        await collections[key].deleteMany({});
+        cleared.push(key);
+      }
+    }
+    res.json({ message: 'All production data cleared successfully (except users).', clearedCollections: cleared });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { authUser, debugDb, seedDb, clearDb };
