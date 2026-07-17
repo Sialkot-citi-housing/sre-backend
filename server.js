@@ -9,6 +9,7 @@ const contractorRoutes = require('./routes/contractorRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const fundRoutes = require('./routes/fundRoutes');
 const officeExpenseRoutes = require('./routes/officeExpenseRoutes');
+const invoiceRoutes = require('./routes/invoiceRoutes');
 
 // Connect to database
 connectDB();
@@ -27,6 +28,7 @@ app.use('/api/contractors', contractorRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/funds', fundRoutes);
 app.use('/api/office-expenses', officeExpenseRoutes);
+app.use('/api/invoices', invoiceRoutes);
 
 app.get('/', (req, res) => {
   res.send('SRE API is running...');
