@@ -81,7 +81,11 @@ const updateInvoice = async (req, res) => {
       res.status(404).json({ message: 'Invoice not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Cloudinary Upload Error Details:", error);
+    res.status(500).json({ 
+      message: error.message || 'Internal Server Error',
+      errorDetails: error
+    });
   }
 };
 
