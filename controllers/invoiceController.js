@@ -56,7 +56,19 @@ const updateInvoice = async (req, res) => {
 
     if (invoice) {
       invoice.status = req.body.status || invoice.status;
-      invoice.pdfUrl = req.body.pdfUrl || invoice.pdfUrl;
+      
+      // If the frontend sends a base64 encoded PDF string, upload it to Cloudinary
+      if (req.body.pdfBase64) {
+        const cloudinary = require('../config/cloudinary');
+        const uploadResponse = await cloudinary.uploader.upload(req.body.pdfBase64, {
+          folder: 'sre_invoices',
+          resource_type: 'auto',
+          public_id: invoice.invoiceNumber
+        });
+        invoice.pdfUrl = uploadResponse.secure_url;
+      } else if (req.body.pdfUrl) {
+        invoice.pdfUrl = req.body.pdfUrl;
+      }
 
       const updatedInvoice = await invoice.save();
       res.json(updatedInvoice);
