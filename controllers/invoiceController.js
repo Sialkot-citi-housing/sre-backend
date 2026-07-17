@@ -60,7 +60,12 @@ const updateInvoice = async (req, res) => {
       // If the frontend sends a base64 encoded PDF string, upload it to Cloudinary
       if (req.body.pdfBase64) {
         const cloudinary = require('../config/cloudinary');
-        const uploadResponse = await cloudinary.uploader.upload(req.body.pdfBase64, {
+        
+        // jsPDF adds a non-standard 'filename=generated.pdf;' to the data URI which Cloudinary rejects.
+        // We strip it out to leave a clean 'data:application/pdf;base64,...'
+        const cleanBase64 = req.body.pdfBase64.replace(/filename=[^;]+;/, '');
+
+        const uploadResponse = await cloudinary.uploader.upload(cleanBase64, {
           folder: 'sre_invoices',
           resource_type: 'auto',
           public_id: invoice.invoiceNumber
