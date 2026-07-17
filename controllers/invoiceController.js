@@ -5,7 +5,7 @@ const Invoice = require('../models/Invoice');
 // @access  Private
 const createInvoice = async (req, res) => {
   try {
-    const { date, dueDate, customerName, customerPhone, project, items, status, notes, pdfUrl } = req.body;
+    const { date, dueDate, customerName, customerPhone, customerEmail, customerAddress, contractNo, projectManager, project, items, discount, taxRate, status, notes, pdfUrl } = req.body;
 
     // Generate Invoice Number (e.g. INV-001)
     const count = await Invoice.countDocuments();
@@ -20,9 +20,15 @@ const createInvoice = async (req, res) => {
       dueDate,
       customerName,
       customerPhone,
+      customerEmail,
+      customerAddress,
+      contractNo,
+      projectManager,
       project,
       items,
       totalAmount,
+      discount,
+      taxRate,
       status,
       pdfUrl,
       notes

@@ -25,4 +25,18 @@ const addOfficeExpense = async (req, res) => {
   }
 };
 
-module.exports = { getOfficeExpenses, addOfficeExpense };
+const deleteOfficeExpense = async (req, res) => {
+  try {
+    const expense = await OfficeExpense.findById(req.params.id);
+    if (expense) {
+      await expense.deleteOne();
+      res.json({ message: 'Office Expense removed' });
+    } else {
+      res.status(404).json({ message: 'Office Expense not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', errorDetails: error });
+  }
+};
+
+module.exports = { getOfficeExpenses, addOfficeExpense, deleteOfficeExpense };
