@@ -25,6 +25,24 @@ const addOfficeExpense = async (req, res) => {
   }
 };
 
+// @desc    Update office expense
+// @route   PUT /api/office-expenses/:id
+// @access  Private
+const updateOfficeExpense = async (req, res) => {
+  try {
+    const expense = await OfficeExpense.findById(req.params.id);
+    if (expense) {
+      Object.assign(expense, req.body);
+      const updated = await expense.save();
+      res.json(updated);
+    } else {
+      res.status(404).json({ message: 'Office Expense not found' });
+    }
+  } catch (error) {
+    res.status(400).json({ message: 'Invalid data' });
+  }
+};
+
 const deleteOfficeExpense = async (req, res) => {
   try {
     const expense = await OfficeExpense.findById(req.params.id);
@@ -39,4 +57,4 @@ const deleteOfficeExpense = async (req, res) => {
   }
 };
 
-module.exports = { getOfficeExpenses, addOfficeExpense, deleteOfficeExpense };
+module.exports = { getOfficeExpenses, addOfficeExpense, updateOfficeExpense, deleteOfficeExpense };
